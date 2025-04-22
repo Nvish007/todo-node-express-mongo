@@ -10,7 +10,12 @@ module.exports = {
         console.log("req", req);
     },
     async signup(req, res) {
+      console.log("req", JSON.stringify(req?.body));
         const { username, email, password } = req.body;
+
+        if(!username || !email || !password) {
+          return res.status(400).json({ message: 'Something is missing' });
+        }
 
         try {
           const existingUser = await User.findOne({ $or: [{ username }, { email }] });
